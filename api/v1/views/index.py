@@ -18,7 +18,7 @@ def obj_count():
     """
     Returns the count of each object
     """
-    obj_dict = {} #
+    obj_dict = {}
     obj_names = {"Amenity": "amenites",
          "City": "cities",
          "Place": "places",
