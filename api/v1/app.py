@@ -3,7 +3,7 @@
     that supports API v.1
 """
 import os
-from flask import Flask
+from flask import Flask, jsonify
 from models import storage
 from api.v1.views import app_views
 
@@ -18,6 +18,12 @@ def app_teardown(self):
     """
     storage.close()
 
+@app.errorhandler(404)
+def not_found_error(error):
+    """
+    404 error handler
+    """
+    return jsonify({"error": "Not found"})
 
 if __name__ == "__main__":
     host = os.getenv("HBNB_API_HOST", "0.0.0.0")
