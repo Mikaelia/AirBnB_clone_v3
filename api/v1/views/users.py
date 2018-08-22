@@ -3,6 +3,7 @@ from api.v1.views import app_views
 from models import storage, User
 from flask import abort, request, jsonify
 
+
 @app_views.route('/users/', strict_slashes=False, methods=['GET'])
 def user_list():
     """
@@ -11,6 +12,7 @@ def user_list():
     users = storage.all("User").values()
     user_list = [user.to_dict() for user in users]
     return jsonify(user_list)
+
 
 @app_views.route('/users/<user_id>', strict_slashes=False, methods=['GET'])
 def user_by_id(user_id):
@@ -21,6 +23,7 @@ def user_by_id(user_id):
     users = storage.all("User").values()
     user = next(filter(lambda x: x.id == user_id, users), None)
     return jsonify(user.to_dict()) if user else abort(404), 201
+
 
 @app_views.route('/users/<user_id>', strict_slashes=False, methods=['DELETE'])
 def delete_user(user_id):
@@ -36,6 +39,7 @@ def delete_user(user_id):
     else:
         abort(404)
 
+
 @app_views.route('/users', strict_slashes=False, methods=['POST'])
 def create_user():
     """
@@ -43,7 +47,7 @@ def create_user():
     If dict does not contain 'name' key, raise 400
     Returns user object with status 201
     """
-    if not request.get_json() or not 'name' in request.get_json():
+    if not request.get_json() or 'name' not in request.get_json():
         abort(400, description="Missing name")
 
     kwargs = request.get_json()
@@ -56,7 +60,7 @@ def create_user():
     storage.new(my_user)
     storage.save()
     return jsonify(my_user.to_dict()), 201
-   
+
 
 @app_views.route('/users/<user_id>', strict_slashes=False, methods=['PUT'])
 def put(user_id):
@@ -68,9 +72,9 @@ def put(user_id):
     users = storage.all("User").values()
     user = next(filter(lambda x: x.id == user_id, users), None)
     if not user:
-            abort(404)
+        abort(404)
     if not request.get_json():
-            abort(400, description="Not a JSON")
+        abort(400, description="Not a JSON")
     args = request.get_json()
 
     user.name = args.get('name', user.state_id)
@@ -80,4 +84,4 @@ def put(user_id):
 
     return jsonify(user.to_dict()), 200
 
-    #might need to ignore keys explicityly
+    # might need to ignore keys explicityly

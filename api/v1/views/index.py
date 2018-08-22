@@ -5,6 +5,7 @@ from api.v1.views import app_views
 from flask import jsonify
 from models import storage
 
+
 @app_views.route("/status")
 def status():
     """
@@ -13,6 +14,7 @@ def status():
     """
     return jsonify({"status": "OK"})
 
+
 @app_views.route("/stats")
 def obj_count():
     """
@@ -20,11 +22,11 @@ def obj_count():
     """
     obj_dict = {}
     obj_names = {"Amenity": "amenites",
-         "City": "cities",
-         "Place": "places",
-         "Review": "reviews",
-         "State": "states",
-         "User": "users" }
+                 "City": "cities",
+                 "Place": "places",
+                 "Review": "reviews",
+                 "State": "states",
+                 "User": "users"}
 
     for k, v in obj_names.items():
         obj_dict[v] = storage.count(k)

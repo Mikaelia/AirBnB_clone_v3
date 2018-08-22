@@ -3,7 +3,11 @@ from api.v1.views import app_views
 from models import storage, Review
 from flask import abort, request, jsonify
 
-@app_views.route('/places/<place_id>/reviews', strict_slashes=False, methods=['GET'])
+
+@app_views.route(
+    '/places/<place_id>/reviews',
+    strict_slashes=False,
+    methods=['GET'])
 def review_list(place_id):
     """
     Retrieves the list of all Review objects of a Place
@@ -11,7 +15,8 @@ def review_list(place_id):
     a = storage.get("Place", place_id)
     if a is None:
         abort(404)
-    return jsonify(a.reviews) #check this
+    return jsonify(a.reviews)  # check this
+
 
 @app_views.route('/reviews/<review_id>', strict_slashes=False, methods=['GET'])
 def review_by_id(review_id):
@@ -23,7 +28,11 @@ def review_by_id(review_id):
     review = next(filter(lambda x: x.id == review_id, reviews), None)
     return jsonify(review.to_dict()) if review else abort(404), 201
 
-@app_views.route('/reviews/<review_id>', strict_slashes=False, methods=['DELETE'])
+
+@app_views.route(
+    '/reviews/<review_id>',
+    strict_slashes=False,
+    methods=['DELETE'])
 def delete_review(review_id):
     """
     Deletes review by id. If review_id not linked to review, raise 404
@@ -37,7 +46,11 @@ def delete_review(review_id):
     else:
         abort(404)
 
-@app_views.route('places/<place_id>/reviews', strict_slashes=False, methods=['POST'])
+
+@app_views.route(
+    'places/<place_id>/reviews',
+    strict_slashes=False,
+    methods=['POST'])
 def create_review(place_id):
     """
     Creates new review. If request body not valid JSON, raises 400
@@ -66,7 +79,7 @@ def create_review(place_id):
     storage.new(my_review)
     storage.save()
     return jsonify(my_review.to_dict()), 201
-   
+
 
 @app_views.route('/reviews/<review_id>', strict_slashes=False, methods=['PUT'])
 def put(review_id):
@@ -78,14 +91,13 @@ def put(review_id):
     reviews = storage.all("Review").values()
     review = next(filter(lambda x: x.id == review_id, reviews), None)
     if not review:
-            abort(404)
+        abort(404)
     if not request.get_json():
-            abort(400, description="Not a JSON")
+        abort(400, description="Not a JSON")
     args = request.get_json()
 
     review.text = args.get('text', review.text)
-    
 
     return jsonify(review.to_dict()), 200
 
-    #might need to ignore keys explireviewly
+    # might need to ignore keys explireviewly
