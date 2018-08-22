@@ -3,13 +3,22 @@ from api.v1.views import app_views
 from models import storage, Amenity
 from flask import abort, request, jsonify
 
+@app_views.route('/amenities/', strict_slashes=False, methods=['GET'])
+def amenity_list():
+    """
+    Retrieves a list of all Amenity objects
+    """
+    amenities = storage.all("Amenity").values()
+    amenity_list = [amenity.to_dict() for amenity in amenities]
+    return jsonify(amenity_list)
+
 @app_views.route('/amenities/<amenity_id>', strict_slashes=False, methods=['GET'])
 def amenity_by_id(amenity_id):
     """
     Retrieves amenity by amenity id. If amenity_id not linked to amenity,
     raise 404.
     """
-    amenities = storage.all("amenity").values()
+    amenities = storage.all("Amenity").values()
     amenity = next(filter(lambda x: x.id == amenity_id, amenities), None)
     return jsonify(amenity.to_dict()) if amenity else abort(404), 201
 
@@ -19,7 +28,7 @@ def delete_amenity(amenity_id):
     Deletes amenity by id. If amenity_id not linked to amenity, raise 404
     Returns empty dict with status 200
     """
-    amenities = storage.all("amenity").values()
+    amenities = storage.all("Amenity").values()
     amenity = next(filter(lambda x: x.id == amenity_id, amenities), None)
     if amenity:
         storage.delete(amenity)
@@ -34,8 +43,8 @@ def create_amenity():
     If dict does not contain 'name' key, raise 400
     Returns amenity object with status 201
     """
-    if not request.get_json() or not 'name' in request.get_json(): #add missing name message
-        abort(400)
+    if not request.get_json() or not 'name' in request.get_json():
+        abort(400, description="Missing name")
 
     kwargs = request.get_json()
     my_amenity = Amenity(**kwargs)
@@ -51,7 +60,7 @@ def put(amenity_id):
     If amenity_id not linked to amenity object, raise 404
     Returns amenity object with status code 200
     """
-    amenities = storage.all("amenity").values()
+    amenities = storage.all("Amenity").values()
     amenity = next(filter(lambda x: x.id == amenity_id, amenities), None)
     if not amenity:
             abort(404)

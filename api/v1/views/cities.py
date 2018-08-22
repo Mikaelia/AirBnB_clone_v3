@@ -46,8 +46,10 @@ def create_city(state_id):
     If dict does not contain 'name' key, raise 400
     Returns city object with status 201
     """
-    if not request.get_json() or not 'name' in request.get_json():
-        abort(400)
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+    if not 'name' in request.get_json():
+        abort(400, description="Missing name")
 
     a = storage.get("State", state_id)
     if a is None:
@@ -73,7 +75,7 @@ def put(city_id):
     if not city:
             abort(404)
     if not request.get_json():
-            abort(400)
+            abort(400, description="Not a JSON")
     args = request.get_json()
 
     city.state_name = args.get('state_id', city.state_id)
