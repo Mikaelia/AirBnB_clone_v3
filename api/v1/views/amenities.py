@@ -65,7 +65,7 @@ def put(amenity_id):
     if not amenity:
             abort(404)
     if not request.get_json():
-            abort(400)
+            abort(400, description='Not a JSON')
     args = request.get_json()
 
     amenity.name = args.get('name', amenity.state_id)
