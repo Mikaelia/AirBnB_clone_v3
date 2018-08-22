@@ -6,7 +6,7 @@ from flask import abort, request, jsonify
 @app_views.route('/users/', strict_slashes=False, methods=['GET'])
 def user_list():
     """
-    Retrieves a list of all Amenity objects
+    Retrieves a list of all User objects
     """
     users = storage.all("User").values()
     user_list = [user.to_dict() for user in users]
