@@ -28,7 +28,7 @@ def amenity_by_id(amenity_id):
     """
     amenities = storage.all("Amenity").values()
     amenity = next(filter(lambda x: x.id == amenity_id, amenities), None)
-    return jsonify(amenity.to_dict()) if amenity else abort(404), 201
+    return jsonify(amenity.to_dict()) if amenity else abort(404)
 
 
 @app_views.route(
@@ -44,6 +44,7 @@ def delete_amenity(amenity_id):
     amenity = next(filter(lambda x: x.id == amenity_id, amenities), None)
     if amenity:
         storage.delete(amenity)
+        storage.save()
         return jsonify({}), 200
     else:
         abort(404)
@@ -57,12 +58,14 @@ def create_amenity():
     Returns amenity object with status 201
     """
     if not request.get_json() or 'name' not in request.get_json():
-        abort(400, description="Missing name")
+        abort(400, "Missing name")
 
     kwargs = request.get_json()
     my_amenity = Amenity(**kwargs)
+
     storage.new(my_amenity)
     storage.save()
+    
     return jsonify(my_amenity.to_dict()), 201
 
 
@@ -81,11 +84,12 @@ def update_amenity(amenity_id):
     if not amenity:
         abort(404)
     if not request.get_json():
-        abort(400, description='Not a JSON')
+        abort(400, 'Not a JSON')
     args = request.get_json()
 
-    amenity.name = args.get('name', amenity.name)
-
+    for k, v in args.items():
+        if k not in ['id', 'created_at', 'updated_at']:
+            setattr(amenity, k, v)
     storage.save()
 
     return jsonify(amenity.to_dict()), 200

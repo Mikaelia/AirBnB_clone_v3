@@ -25,7 +25,7 @@ def user_by_id(user_id):
     """
     users = storage.all("User").values()
     user = next(filter(lambda x: x.id == user_id, users), None)
-    return jsonify(user.to_dict()) if user else abort(404), 201
+    return jsonify(user.to_dict()) if user else abort(404)
 
 
 @app_views.route('/users/<user_id>', strict_slashes=False, methods=['DELETE'])
@@ -38,6 +38,7 @@ def delete_user(user_id):
     user = next(filter(lambda x: x.id == user_id, users), None)
     if user:
         storage.delete(user)
+        storage.save()
         return jsonify({}), 200
     else:
         abort(404)
@@ -51,17 +52,18 @@ def create_user():
     Returns user object with status 201
     """
     if not request.get_json() or 'name' not in request.get_json():
-        abort(400, description="Missing name")
+        abort(400, "Missing name")
 
     kwargs = request.get_json()
     if not kwargs.get('email'):
-        abort(400, description="Missing email")
+        abort(400, "Missing email")
     if not kwargs.get('password'):
-        abort(400, description='Missing password')
-
+        abort(400, 'Missing password')
     my_user = User(**kwargs)
+
     storage.new(my_user)
     storage.save()
+
     return jsonify(my_user.to_dict()), 201
 
 
@@ -77,14 +79,12 @@ def update_user(user_id):
     if not user:
         abort(404)
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     args = request.get_json()
 
-    user.name = args.get('name', user.state_id)
-    user.password = args.get('password', user.password)
-    user.first_name = args.get('first_name', user.first_name)
-    user.last_name = args.get('last_name', user.last_name)
-
+    for k, v in args.items():
+        if k not in ['id', 'created_at', 'updated_at', 'email']:
+            setattr(user, k, v)
     storage.save()
 
     return jsonify(user.to_dict()), 200
