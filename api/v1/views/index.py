@@ -29,6 +29,6 @@ def obj_count():
                  "State": "states",
                  "User": "users"}
 
-    for k, v in obj_names.items():
+    for k, v in sorted(obj_names.items()):
         obj_dict[v] = storage.count(k)
     return jsonify(obj_dict)
