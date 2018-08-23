@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" 
+"""
 This module contains the CRUD for the State API endpoints
 """
 from api.v1.views import app_views
@@ -23,7 +23,7 @@ def get_states(state_id=None):
     if state_id is not None:
         for state in states:
             if state_id == state.id:
-               return jsonify(state.to_dict())
+                return jsonify(state.to_dict())
         return abort(404)
 
     return jsonify(results)
@@ -82,12 +82,12 @@ def update_states(state_id):
     try:
         state = storage.get("State", state_id)
     except:
-       abort(404)
+        abort(404)
 
     if not state:
-       abort(404)
+        abort(404)
 
-    attrs_to_skip =  ["id", "created_at", "updated_at"]
+    attrs_to_skip = ["id", "created_at", "updated_at"]
     for k, v in json.items():
         if k not in attrs_to_skip:
             setattr(state, k, v)
