@@ -81,6 +81,6 @@ def update_amenity(amenity_id):
         abort(400, description='Not a JSON')
     args = request.get_json()
 
-    amenity.name = args.get('name', amenity.state_id)
+    amenity.name = args.get('name', amenity.name)
 
     return jsonify(amenity.to_dict()), 200
