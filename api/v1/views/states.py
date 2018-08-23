@@ -7,20 +7,19 @@ from models import storage, State
 from flask import abort, jsonify, request
 
 
-@app_views.route("/states", strict_slashes=False)
-@app_views.route("/states/<state_id>", strict_slashes=False)
+@app_views.route("/states", methods=["GET"], strict_slashes=False)
+@app_views.route("/states/<state_id>", methods=["GET"], strict_slashes=False)
 def get_states(state_id=None):
     """ The "states" get route.
         Returns the list of all State objects
         or the state json object if state_id was specified
     """
-    states = storage.all("State").values()
-    results = []
+    if state_id is not None:
+        states = storage.all("State").values()
+        results = []
 
     for state in states:
         results.append(state.to_dict())
-
-    if state_id is not None:
         for state in states:
             if state_id == state.id:
                 return jsonify(state.to_dict())
@@ -72,7 +71,7 @@ def create_state():
 
 
 @app_views.route("/states/<state_id>", strict_slashes=False, methods=["PUT"])
-def update_states(state_id):
+def update_states(state_id=None):
     """ Updates state. If request not valid JSON, raises 400.
         If state_id not linked to State object, raise 404
         Returns state object with status code 200
@@ -84,11 +83,11 @@ def update_states(state_id):
 
     try:
         state = storage.get("State", state_id)
+        if state is None:
+            abort(404)
     except:
         abort(404)
 
-    if not state:
-        abort(404)
 
     attrs_to_skip = ["id", "created_at", "updated_at"]
     for k, v in json.items():
@@ -97,4 +96,4 @@ def update_states(state_id):
 
     state.save()
 
-    return jsonify(state.to_dict()), 200
+    return jsonify(state.to_dict())
