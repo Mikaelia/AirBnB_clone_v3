@@ -17,18 +17,19 @@ def status():
 
 
 @app_views.route("/stats")
-def obj_count():
+def stats():
     """
     Returns the count of each object
     """
-    obj_dict = {}
-    obj_names = {"Amenity": "amenites",
-                 "City": "cities",
-                 "Place": "places",
-                 "Review": "reviews",
-                 "State": "states",
-                 "User": "users"}
+    results = {}
+    names = {"Amenity": "amenites",
+             "City": "cities",
+             "Place": "places",
+             "Review": "reviews",
+             "State": "states",
+             "User": "users"}
 
-    for k, v in obj_names.items():
-        obj_dict[v] = storage.count(k)
-    return jsonify(obj_dict)
+    for k, v in sorted(names.items()):
+        results[v] = storage.count(k)
+
+    return jsonify(results)
