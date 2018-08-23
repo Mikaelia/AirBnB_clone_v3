@@ -37,13 +37,12 @@ def delete_state(state_id):
         Returns empty dict with status 200
         If state_id is not linked to state, raises 404
     """
-    states = storage.all("State").values()
-    state = next(filter(lambda state: state.id == state_id, states), None)
-    if state:
+    try:
+        state = storage.get("State", state_id)
         storage.delete(state)
         storage.save()
         return jsonify({})
-    else:
+    except:
         abort(404)
 
 
