@@ -67,7 +67,7 @@ def create_amenity():
     '/amenities/<amenity_id>',
     strict_slashes=False,
     methods=['PUT'])
-def put(amenity_id):
+def update_amenity(amenity_id):
     """
     Updates amenity. If request not valid JSON, raises 400.
     If amenity_id not linked to amenity object, raise 404

@@ -82,7 +82,7 @@ def create_review(place_id):
 
 
 @app_views.route('/reviews/<review_id>', strict_slashes=False, methods=['PUT'])
-def put(review_id):
+def update_review(review_id):
     """
     Updates review. If request not valid JSON, raises 400.
     If review_id not linked to review object, raise 404

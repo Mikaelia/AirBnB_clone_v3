@@ -75,7 +75,7 @@ def create_city(state_id):
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False, methods=['PUT'])
-def put(city_id):
+def update_city(city_id):
     """
     Updates city. If request not valid JSON, raises 400.
     If city_id not linked to City object, raise 404

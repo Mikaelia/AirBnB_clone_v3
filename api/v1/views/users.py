@@ -63,7 +63,7 @@ def create_user():
 
 
 @app_views.route('/users/<user_id>', strict_slashes=False, methods=['PUT'])
-def put(user_id):
+def update_user(user_id):
     """
     Updates user. If request not valid JSON, raises 400.
     If user_id not linked to user object, raise 404

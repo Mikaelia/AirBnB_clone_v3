@@ -78,7 +78,7 @@ def create_place(city_id):
 
 
 @app_views.route('/places/<place_id>', strict_slashes=False, methods=['PUT'])
-def put(place_id):
+def update_place(place_id):
     """
     Updates place. If request not valid JSON, raises 400.
     If place_id not linked to place object, raise 404
