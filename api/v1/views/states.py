@@ -89,7 +89,6 @@ def update_states(state_id=None):
     except:
         abort(404)
 
-
     attrs_to_skip = ["id", "created_at", "updated_at"]
     for k, v in json.items():
         if k not in attrs_to_skip:
