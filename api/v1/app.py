@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" 
+"""
 This module creates and runs the Flask app
 that supports API v.1
 """
@@ -16,7 +16,7 @@ cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
 
 @app.teardown_appcontext
 def app_teardown(self):
-    """ 
+    """
     The hook which will be executed on the app teardown
     """
     storage.close()
