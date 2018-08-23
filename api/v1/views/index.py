@@ -22,7 +22,7 @@ def stats():
     Returns the count of each object
     """
     results = {}
-    names = {"Amenity": "amenites",
+    names = {"Amenity": "amenities",
              "City": "cities",
              "Place": "places",
              "Review": "reviews",
