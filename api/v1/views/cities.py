@@ -44,10 +44,10 @@ def delete_city(city_id):
     city = next(filter(lambda x: x.id == city_id, cities), None)
     if city:
         storage.delete(city)
+        storage.save()
         return jsonify({}), 200
     else:
         abort(404)
-    storage.save()
 
 
 @app_views.route(
@@ -75,7 +75,7 @@ def create_city(state_id):
     my_city = City(**kwargs)
     storage.new(my_city)
     storage.save()
-    
+
     return jsonify(my_city.to_dict()), 201
 
 
