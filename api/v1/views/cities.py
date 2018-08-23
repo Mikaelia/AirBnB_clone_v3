@@ -31,7 +31,7 @@ def city_by_id(city_id):
     """
     cities = storage.all("City").values()
     city = next(filter(lambda x: x.id == city_id, cities), None)
-    return jsonify(city.to_dict()) if city else abort(404), 201
+    return jsonify(city.to_dict()) if city else abort(404)
 
 
 @app_views.route('/cities/<city_id>', strict_slashes=False, methods=['DELETE'])
@@ -62,9 +62,9 @@ def create_city(state_id):
     Returns city object with status 201
     """
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     if 'name' not in request.get_json():
-        abort(400, description="Missing name")
+        abort(400, "Missing name")
 
     a = storage.get("State", state_id)
     if a is None:
@@ -73,6 +73,7 @@ def create_city(state_id):
     kwargs = request.get_json()
     kwargs['state_id'] = state_id
     my_city = City(**kwargs)
+
     storage.new(my_city)
     storage.save()
 
@@ -91,7 +92,7 @@ def update_city(city_id):
     if not city:
         abort(404)
     if not request.get_json():
-        abort(400, description="Not a JSON")
+        abort(400, "Not a JSON")
     args = request.get_json()
 
     city.name = args.get('name', city.name)
