@@ -29,25 +29,26 @@ def get_states(state_id=None):
     return jsonify(results)
 
 
-@app_views.route('/states/<state_id>',
+@app_views.route("/states/<state_id>",
                  strict_slashes=False,
-                 methods=['DELETE'])
-def delete_state(state_id):
+                 methods=["DELETE"])
+def delete_state(state_id=None):
     """ Deletes state by id.
         Returns empty dict with status 200
         If state_id is not linked to state, raises 404
     """
-    states = storage.all("State").values()
-    state = next(filter(lambda state: state.id == state_id, states), None)
-    if state:
+    if state_id is None:
+        abort(404)
+    try:
+        state = storage.get("State", state_id)
         storage.delete(state)
         storage.save()
         return jsonify({})
-    else:
+    except:
         abort(404)
 
 
-@app_views.route('/states', strict_slashes=False, methods=['POST'])
+@app_views.route("/states", strict_slashes=False, methods=["POST"])
 def create_state():
     """ Creates new state. If request body not valid JSON, raises 400
         If state_id not linked to State, raise 404
@@ -69,7 +70,7 @@ def create_state():
     return jsonify(state.to_dict()), 201
 
 
-@app_views.route('/states/<state_id>', strict_slashes=False, methods=['PUT'])
+@app_views.route("/states/<state_id>", strict_slashes=False, methods=["PUT"])
 def update_states(state_id):
     """ Updates state. If request not valid JSON, raises 400.
         If state_id not linked to State object, raise 404
