@@ -92,7 +92,6 @@ def update_city(city_id):
         abort(400, description="Not a JSON")
     args = request.get_json()
 
-    city.state_name = args.get('state_id', city.state_id)
     city.name = args.get('name', city.name)
     
     storage.save()
