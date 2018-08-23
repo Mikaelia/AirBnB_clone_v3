@@ -41,6 +41,7 @@ def delete_state(state_id):
     state = next(filter(lambda state: state.id == state_id, states), None)
     if state:
         storage.delete(state)
+        storage.save()
         return jsonify({})
     else:
         abort(404)
