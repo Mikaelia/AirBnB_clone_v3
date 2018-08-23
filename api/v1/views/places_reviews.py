@@ -12,10 +12,11 @@ def review_list(place_id):
     """
     Retrieves the list of all Review objects of a Place
     """
-    a = storage.get("Place", place_id)
-    if a is None:
+    place = storage.get("Place", place_id)
+    if place is None:
         abort(404)
-    return jsonify(a.reviews)  # check this
+    review_list = [review.to_dict() for review in place.reviews]
+    return jsonify(review_list)  # check this
 
 
 @app_views.route('/reviews/<review_id>', strict_slashes=False, methods=['GET'])
@@ -24,7 +25,7 @@ def review_by_id(review_id):
     Retrieves review by review id. If review_id not linked to review,
     raise 404.
     """
-    reviews = storage.all("review").values()
+    reviews = storage.all("Review").values()
     review = next(filter(lambda x: x.id == review_id, reviews), None)
     return jsonify(review.to_dict()) if review else abort(404), 201
 
@@ -62,20 +63,21 @@ def create_review(place_id):
 
     kwargs = request.get_json()
 
-    a = storage.get("Place", place_id)
-    if a is None:
-        abort(404)
-
-    a = storage.get("User", kwargs.user_id)
-    if a is None:
-        abort(404)
-
     if not kwargs.get('user_id'):
         abort(400, description="Missing user_id")
     if not kwargs.get('text'):
         abort(400, description='Missing text')
 
-    my_review = Review(**kwargs)
+    a = storage.get("Place", place_id)
+    if a is None:
+        abort(404)
+
+    a = storage.get("User", kwargs["user_id"])
+    if a is None:
+        abort(404)
+
+
+    my_review = Review(place_id=place_id, **kwargs)
     storage.new(my_review)
     storage.save()
     return jsonify(my_review.to_dict()), 201
