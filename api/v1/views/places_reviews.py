@@ -104,10 +104,9 @@ def update_review(review_id):
 
     review.text = args.get('text', review.text)
 
-
     for k, v in args.items():
-    if k not in ['id', 'created_at', 'updated_at', 'user_id', 'place_id']:
-        setattr(review, k, v)
+        if k not in ['id', 'created_at', 'updated_at', 'user_id', 'place_id']:
+            setattr(review, k, v)
     storage.save()
 
     return jsonify(review.to_dict()), 200
