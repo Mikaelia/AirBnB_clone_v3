@@ -79,7 +79,6 @@ def create_review(place_id):
     if a is None:
         abort(404)
 
-
     my_review = Review(place_id=place_id, **kwargs)
     storage.new(my_review)
     storage.save()
