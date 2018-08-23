@@ -16,10 +16,13 @@ def city_by_state_id(state_id):
     Retrieves list of all City objects of a State
     """
     cities = storage.all("City").values()
+    state = storage.get("State", state_id)
+    if not state:
+        abort(404)
     city_list = [city.to_dict()
                  for city in cities if city.state_id == state_id]
     if len(city_list) == 0:
-        abort(404)
+        return []
     return jsonify(city_list)
 
 
@@ -61,6 +64,7 @@ def create_city(state_id):
     If dict does not contain 'name' key, raise 400
     Returns city object with status 201
     """
+
     if not request.get_json():
         abort(400, "Not a JSON")
     if 'name' not in request.get_json():
