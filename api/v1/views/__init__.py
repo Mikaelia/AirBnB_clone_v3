@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-""" This module initilizes the "/api/v1" blueprint
+""" 
+This module initilizes the "app_views" blueprint
 """
 from flask import Blueprint
 

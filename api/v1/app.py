@@ -1,6 +1,7 @@
 #!/usr/bin/python3
-""" This module creates the Flask app
-    that supports API v.1
+""" 
+This module creates and runs the Flask app
+that supports API v.1
 """
 import os
 from flask import Flask, jsonify
@@ -14,9 +15,11 @@ app.register_blueprint(app_views, url_prefix="/api/v1")
 
 @app.teardown_appcontext
 def app_teardown(self):
-    """ The hook which will be executed on the app teardown
+    """ 
+    The hook which will be executed on the app teardown
     """
     storage.close()
+
 
 @app.errorhandler(404)
 def not_found_error(error):
@@ -24,6 +27,7 @@ def not_found_error(error):
     404 error handler
     """
     return jsonify({"error": "Not found"})
+
 
 if __name__ == "__main__":
     host = os.getenv("HBNB_API_HOST", "0.0.0.0")
