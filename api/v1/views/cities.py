@@ -15,14 +15,10 @@ def city_by_state_id(state_id):
     """
     Retrieves list of all City objects of a State
     """
-    cities = storage.all("City").values()
     state = storage.get("State", state_id)
     if not state:
         abort(404)
-    city_list = [city.to_dict()
-                 for city in cities if city.state_id == state_id]
-    if len(city_list) == 0:
-        return []
+    city_list = [city.to_dict() for city in state.cities]
     return jsonify(city_list)
 
 
