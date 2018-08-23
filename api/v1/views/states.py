@@ -1,5 +1,6 @@
 #!/usr/bin/python3
-""" This module contains the CRUD for the State API endpoint
+""" 
+This module contains the CRUD for the State API endpoints
 """
 from api.v1.views import app_views
 from models import storage, State

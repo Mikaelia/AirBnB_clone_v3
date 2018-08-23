@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+Place endpoints
+"""
 from api.v1.views import app_views
 from models import storage, Place
 from flask import abort, request, jsonify

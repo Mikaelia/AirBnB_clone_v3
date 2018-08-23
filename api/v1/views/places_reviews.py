@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+Review endpoints
+"""
 from api.v1.views import app_views
 from models import storage, Review
 from flask import abort, request, jsonify

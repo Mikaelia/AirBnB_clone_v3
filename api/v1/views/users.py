@@ -1,4 +1,7 @@
 #!/usr/bin/python3
+"""
+User endpoints
+"""
 from api.v1.views import app_views
 from models import storage, User
 from flask import abort, request, jsonify

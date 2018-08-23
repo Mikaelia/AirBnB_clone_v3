@@ -1,7 +1,6 @@
 #!/usr/bin/python3
 """ 
-This module adds the "status" and "stats"
-route to the "/api/v1" blueprint
+Status and stats endpoints
 """
 from api.v1.views import app_views
 from flask import jsonify
