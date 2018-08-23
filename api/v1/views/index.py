@@ -32,4 +32,4 @@ def stats():
     for k, v in sorted(names.items()):
         results[v] = storage.count(k)
 
-    return jsonify(obj_dict)
+    return jsonify(results)
