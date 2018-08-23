@@ -86,7 +86,6 @@ def update_amenity(amenity_id):
         abort(400, 'Not a JSON')
     args = request.get_json()
 
-    
     for k, v in args.items():
         if k not in ['id', 'created_at', 'updated_at']:
             setattr(amenity, k, v)
