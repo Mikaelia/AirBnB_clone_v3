@@ -102,6 +102,8 @@ def update_review(review_id):
 
     review.text = args.get('text', review.text)
 
+    storage.save()
+
     return jsonify(review.to_dict()), 200
 
     # might need to ignore keys explireviewly

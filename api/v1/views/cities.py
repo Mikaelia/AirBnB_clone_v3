@@ -95,5 +95,6 @@ def update_city(city_id):
     city.state_name = args.get('state_id', city.state_id)
     city.name = args.get('name', city.name)
     city.places = args.get('places', city.places)
+    storage.save()
 
     return jsonify(city.to_dict()), 200

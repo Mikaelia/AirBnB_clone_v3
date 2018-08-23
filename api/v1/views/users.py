@@ -85,6 +85,8 @@ def update_user(user_id):
     user.first_name = args.get('first_name', user.first_name)
     user.last_name = args.get('last_name', user.last_name)
 
+    storage.save()
+
     return jsonify(user.to_dict()), 200
 
     # might need to ignore keys explicityly

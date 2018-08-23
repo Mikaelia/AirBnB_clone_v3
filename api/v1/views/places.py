@@ -106,6 +106,8 @@ def update_place(place_id):
     place.longitude = args.get('longitude', place.longitude)
     place.amenity_ids = args.get('amenity_ids', place.amenity_ids)
 
+    storage.save()
+
     return jsonify(place.to_dict()), 200
 
     # might need to ignore keys explicityly

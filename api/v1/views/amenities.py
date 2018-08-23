@@ -86,4 +86,6 @@ def update_amenity(amenity_id):
 
     amenity.name = args.get('name', amenity.name)
 
+    storage.save()
+
     return jsonify(amenity.to_dict()), 200
