@@ -14,12 +14,13 @@ def get_states(state_id=None):
         Returns the list of all State objects
         or the state json object if state_id was specified
     """
-    if state_id is not None:
-        states = storage.all("State").values()
-        results = []
+    states = storage.all("State").values()
+    results = []
 
     for state in states:
         results.append(state.to_dict())
+
+    if state_id is not None:
         for state in states:
             if state_id == state.id:
                 return jsonify(state.to_dict())
