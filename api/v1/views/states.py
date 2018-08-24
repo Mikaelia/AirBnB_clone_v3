@@ -4,7 +4,7 @@ This module contains the CRUD for the State API endpoints
 """
 from api.v1.views import app_views
 from models import storage, State
-from flask import abort, jsonify, request
+from flask import abort, jsonify, request, make_response
 
 
 @app_views.route("/states", methods=["GET"], strict_slashes=False)
@@ -86,11 +86,9 @@ def update_states(state_id=None):
     if state is None:
         abort(404)
 
-    attrs_to_skip = ["id", "created_at", "updated_at"]
-    for k, v in json.items():
-        if k not in attrs_to_skip:
+    for k, v in request.json.items():
+        if k not in ['updated_at', 'created_at', 'id']:
             setattr(state, k, v)
-
     state.save()
-
-    return jsonify(state.to_dict()), 200
+    data = state.to_dict()
+    return make_response(jsonify(data), 200)
