@@ -53,7 +53,7 @@ def delete_review(review_id):
 
 
 @app_views.route(
-    'places/<place_id>/reviews',
+    '/places/<place_id>/reviews',
     strict_slashes=False,
     methods=['POST'])
 def create_review(place_id):
