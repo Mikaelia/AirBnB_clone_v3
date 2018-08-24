@@ -14,6 +14,22 @@ from flask import abort, request, jsonify
 def place_list(city_id):
     """
     Retrieves the list of all Place objects of a City
+    ---
+    parameters:
+      - city_id:
+        in: cities
+        type: id
+        required: true
+        default: None
+    definitions:
+      Place:
+        type: object
+        properties:
+      City:
+        type: object
+    responses:
+      200:
+        description: the list of all Place objects of a City
     """
     city = storage.get("City", city_id)
     if not city:
