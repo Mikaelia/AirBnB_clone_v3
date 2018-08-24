@@ -16,12 +16,12 @@ class User(BaseModel, Base):
     __tablename__ = "users"
 
     def __init__(self, **kwargs):
-        """ L"""
+        """ Constructor """
         super().__init__(**kwargs)
         self.password = self.set_password(kwargs.get("password", ""))
 
     def set_password(self, plaintext):
-        """ U"""
+        """ Sets password property to it's md5 value """
         return md5(plaintext.encode()).hexdigest().lower()
 
     if getenv("HBNB_TYPE_STORAGE", "fs") == "db":
@@ -35,6 +35,6 @@ class User(BaseModel, Base):
                                cascade="all, delete, delete-orphan")
     else:
         email = ""
-        password = self.password
+        password = ""
         first_name = ""
         last_name = ""
