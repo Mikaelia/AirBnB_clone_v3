@@ -92,10 +92,10 @@ def create_place(city_id):
     if not kwargs.get('name'):
         abort(400, 'Missing name')
 
-    a = storage.get("User", user_id)
+    a = storage.get("User", kwargs['user_id'])
     if a is None:
         abort(404)
-        
+
     my_place = Place(city_id=city_id, **kwargs)
 
     storage.new(my_place)
