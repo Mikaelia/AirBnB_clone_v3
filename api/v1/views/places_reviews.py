@@ -67,14 +67,14 @@ def create_review(place_id):
 
     kwargs = request.get_json()
 
+    a = storage.get("Place", place_id)
+    if a is None:
+        abort(404)
+
     if not kwargs.get('user_id'):
         abort(400, "Missing user_id")
     if not kwargs.get('text'):
         abort(400, 'Missing text')
-
-    a = storage.get("Place", place_id)
-    if a is None:
-        abort(404)
 
     a = storage.get("User", kwargs["user_id"])
     if a is None:
@@ -107,6 +107,7 @@ def update_review(review_id):
     for k, v in args.items():
         if k not in ['id', 'created_at', 'updated_at', 'user_id', 'place_id']:
             setattr(review, k, v)
+
     storage.save()
 
     return jsonify(review.to_dict()), 200
