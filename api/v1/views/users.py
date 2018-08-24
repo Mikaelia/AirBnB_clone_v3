@@ -74,18 +74,17 @@ def update_user(user_id):
     If user_id not linked to user object, raise 404
     Returns user object with status code 200
     """
+    users = storage.all("User").values()
+    user = next(filter(lambda x: x.id == user_id, users), None)
+    if not user:
+        abort(404)
     if not request.get_json():
         abort(400, "Not a JSON")
     args = request.get_json()
-
-    user = storage.get("User", user_id, None);
-    if not user:
-        abort(404)
 
     for k, v in args.items():
         if k not in ['id', 'created_at', 'updated_at', 'email']:
             setattr(user, k, v)
 
-    user.save()
+    storage.save()
     return jsonify(user.to_dict()), 200
-    # might need to ignore keys explicityly
