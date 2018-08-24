@@ -18,8 +18,7 @@ class User(BaseModel, Base):
     def __init__(self, **kwargs):
         """ L"""
         super().__init__(**kwargs)
-        self.password = self.set_password(self.password)
-        # print("\n", "super.__dict__", super().__dict__, "\n")
+        self.password = self.set_password(kwargs.get("password", ""))
 
     def set_password(self, plaintext):
         """ U"""
