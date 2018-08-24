@@ -51,14 +51,15 @@ def create_user():
     If dict does not contain 'name' key, raise 400
     Returns user object with status 201
     """
-    if not request.get_json() or 'name' not in request.get_json():
-        abort(400, "Missing name")
 
     kwargs = request.get_json()
+    if not kwargs:
+        abort(400, 'Not a JSON')
     if not kwargs.get('email'):
         abort(400, "Missing email")
     if not kwargs.get('password'):
         abort(400, 'Missing password')
+
     my_user = User(**kwargs)
 
     storage.new(my_user)
