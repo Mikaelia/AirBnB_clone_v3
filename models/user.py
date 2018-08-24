@@ -35,6 +35,6 @@ class User(BaseModel, Base):
                                cascade="all, delete, delete-orphan")
     else:
         email = ""
-        password = ""
+        password = self.password
         first_name = ""
         last_name = ""
