@@ -37,17 +37,18 @@ def delete_state(state_id=None):
         Returns empty dict with status 200
         If state_id is not linked to state, raises 404
     """
-    try:
-        state = storage.get("State", state_id)
-
-        if state is not None:
-            storage.delete(state)
-            storage.save()
-            return jsonify({}), 200
-
-        abort(404)
-    except:
-        abort(404)
+    # try:
+    #     state = storage.get("State", state_id)
+    #
+    #     if state is not None:
+    #         storage.delete(state)
+    #         storage.save()
+    #         return jsonify({}), 200
+    #
+    #     abort(404)
+    # except:
+    #     abort(404)
+    return jsonify({"error": "Not a JSON"}), 400
 
 
 @app_views.route("/states", strict_slashes=False, methods=["POST"])
@@ -57,19 +58,18 @@ def create_state():
         If dict does not contain 'name' key, raise 400
         Returns state object with status 201
     """
-    # try:
-    #     state = request.get_json()
-    #
-    #     if state.get("name") is None:
-    #         return jsonify({"error": "Missing name"}), 400
-    # except:
-    #     return jsonify({"error": "Not a JSON"}), 400
-    #
-    # state = State(**state)
-    # storage.save()
+    try:
+        state = request.get_json()
 
-    # return jsonify(state.to_dict()), 201
-    return jsonify({"lol":"troll"}), 201
+        if state.get("name") is None:
+            return jsonify({"error": "Missing name"}), 400
+    except:
+        return jsonify({"error": "Not a JSON"}), 400
+
+    state = State(**state)
+    storage.save()
+
+    return jsonify(state.to_dict()), 201
 
 
 @app_views.route("/states/<state_id>", strict_slashes=False, methods=["PUT"])
