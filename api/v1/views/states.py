@@ -57,17 +57,18 @@ def create_state():
         If dict does not contain 'name' key, raise 400
         Returns state object with status 201
     """
-    try:
-        state = request.get_json()
+    # try:
+    #     state = request.get_json()
+    #
+    #     if state.get("name") is None:
+    #         return jsonify({"error": "Missing name"}), 400
+    # except:
+    #     return jsonify({"error": "Not a JSON"}), 400
+    #
+    # state = State(**state)
+    # storage.save()
 
-        if state.get("name") is None:
-            return jsonify({"error": "Missing name"}), 400
-    except:
-        return jsonify({"error": "Not a JSON"}), 400
-
-    state = State(**state)
-    storage.save()
-
+    # return jsonify(state.to_dict()), 201
     return jsonify({"lol":"troll"}), 201
 
 
