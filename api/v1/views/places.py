@@ -86,13 +86,13 @@ def create_place(city_id):
     a = storage.get("City", city_id)
     if a is None:
         abort(404)
-        
+
     if not kwargs.get('user_id'):
         abort(400, "Missing user_id")
     if not kwargs.get('name'):
         abort(400, 'Missing name')
 
-    my_place = Place(**kwargs)
+    my_place = Place(city_id=city_id, **kwargs)
 
     storage.new(my_place)
     storage.save()
