@@ -37,18 +37,17 @@ def delete_state(state_id=None):
         Returns empty dict with status 200
         If state_id is not linked to state, raises 404
     """
-    # try:
-    #     state = storage.get("State", state_id)
-    #
-    #     if state is not None:
-    #         storage.delete(state)
-    #         storage.save()
-    #         return jsonify({}), 200
-    #
-    #     abort(404)
-    # except:
-    #     abort(404)
-    return jsonify({"error": "Not a JSON"}), 400
+    try:
+        state = storage.get("State", state_id)
+
+        if state is not None:
+            storage.delete(state)
+            storage.save()
+            return jsonify({}), 200
+
+        abort(404)
+    except:
+        abort(404)
 
 
 @app_views.route("/states", strict_slashes=False, methods=["POST"])
