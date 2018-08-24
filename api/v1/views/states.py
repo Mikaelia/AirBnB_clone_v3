@@ -82,11 +82,8 @@ def update_states(state_id=None):
     except:
         return jsonify({"error": "Not a JSON"}), 400
 
-    try:
-        state = storage.get("State", state_id)
-        if state is None:
-            abort(404)
-    except:
+    state = storage.get("State", state_id)
+    if state is None:
         abort(404)
 
     attrs_to_skip = ["id", "created_at", "updated_at"]
@@ -96,4 +93,4 @@ def update_states(state_id=None):
 
     state.save()
 
-    return jsonify(state.to_dict())
+    return jsonify(state.to_dict()), 200
