@@ -14,6 +14,22 @@ from flask import abort, request, jsonify
 def place_list(city_id):
     """
     Retrieves the list of all Place objects of a City
+    ---
+    parameters:
+      - city_id:
+        in: cities
+        type: id
+        required: true
+        default: None
+    definitions:
+      Place:
+        type: object
+        properties:
+      City:
+        type: object
+    responses:
+      200:
+        description: the list of all Place objects of a City
     """
     city = storage.get("City", city_id)
     if not city:
@@ -105,5 +121,32 @@ def update_place(place_id):
     storage.save()
 
     return jsonify(place.to_dict()), 200
-
     # might need to ignore keys explicityly
+
+
+@app_views.route('/places/places_search',
+                 strict_slashes=False, methods=['POST'])
+def places_search():
+    """ Searches for places."""
+    if not request.get_json():
+        abort(400, description="Not a JSON")
+    args = request.get_json()
+
+    states = args.get("states", None)
+    cities = args.get("cities", None)
+    amenities = args.get("amenities", None)
+
+    if not states and not cities and not amenities:
+        places = storage.all("Place").values()
+        return jsonify(places), 200
+
+    results = []
+
+    if states:
+        results.append({"states": "States"})
+    if cities:
+        results.append({"cities": "Cities"})
+    if amenities:
+        results.append({"amenities": "Amenity"})
+
+    return jsonify(results), 200

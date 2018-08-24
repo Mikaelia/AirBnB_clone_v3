@@ -85,8 +85,6 @@ def update_user(user_id):
     for k, v in args.items():
         if k not in ['id', 'created_at', 'updated_at', 'email']:
             setattr(user, k, v)
+
     storage.save()
-
     return jsonify(user.to_dict()), 200
-
-    # might need to ignore keys explicityly

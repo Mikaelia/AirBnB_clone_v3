@@ -7,8 +7,8 @@ from models import storage, State
 from flask import abort, jsonify, request
 
 
-@app_views.route("/states", strict_slashes=False)
-@app_views.route("/states/<state_id>", strict_slashes=False)
+@app_views.route("/states", methods=["GET"], strict_slashes=False)
+@app_views.route("/states/<state_id>", methods=["GET"], strict_slashes=False)
 def get_states(state_id=None):
     """ The "states" get route.
         Returns the list of all State objects
@@ -72,7 +72,7 @@ def create_state():
 
 
 @app_views.route("/states/<state_id>", strict_slashes=False, methods=["PUT"])
-def update_states(state_id):
+def update_states(state_id=None):
     """ Updates state. If request not valid JSON, raises 400.
         If state_id not linked to State object, raise 404
         Returns state object with status code 200
@@ -82,12 +82,8 @@ def update_states(state_id):
     except:
         return jsonify({"error": "Not a JSON"}), 400
 
-    try:
-        state = storage.get("State", state_id)
-    except:
-        abort(404)
-
-    if not state:
+    state = storage.get("State", state_id)
+    if state is None:
         abort(404)
 
     attrs_to_skip = ["id", "created_at", "updated_at"]
