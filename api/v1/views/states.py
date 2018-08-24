@@ -4,7 +4,7 @@ This module contains the CRUD for the State API endpoints
 """
 from api.v1.views import app_views
 from models import storage, State
-from flask import abort, jsonify, request, make_response
+from flask import abort, jsonify, request
 
 
 @app_views.route("/states", methods=["GET"], strict_slashes=False)
@@ -77,18 +77,15 @@ def update_states(state_id=None):
         If state_id not linked to State object, raise 404
         Returns state object with status code 200
     """
-    try:
-        json = request.get_json()
-    except:
-        return jsonify({"error": "Not a JSON"}), 400
-
     state = storage.get("State", state_id)
     if state is None:
         abort(404)
 
-    for k, v in request.json.items():
-        if k not in ['updated_at', 'created_at', 'id']:
-            setattr(state, k, v)
-    state.save()
-    data = state.to_dict()
-    return make_response(jsonify(data), 200)
+        if not request.json:
+            abort(400, 'Not a JSON')
+        for k, v in request.json.items():
+            if k not in ['updated_at', 'created_at', 'id']:
+                setattr(state, k, v)
+        state.save()
+        data = state.to_dict()
+        return make_response(jsonify(data), 200)
