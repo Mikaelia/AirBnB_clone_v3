@@ -132,7 +132,7 @@ class testFileStorage(unittest.TestCase):
         '''
         self.assertTrue(isinstance(storage, FileStorage))
 
-    def test_filestorage_get(self):
+    def test_get(self):
         '''
             Testing get method
         '''
@@ -156,11 +156,10 @@ class testFileStorage(unittest.TestCase):
         # clean up
         self.storage.delete(state)
 
-    def test_filestorage_count(self):
+    def test_count(self):
         '''
             Testing cout method
         '''
-        # print("\n", "self.storage.count:", self.storage.count(),"\n")
         count = storage.count()
 
         # count is int

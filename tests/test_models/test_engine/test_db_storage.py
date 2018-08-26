@@ -122,21 +122,52 @@ class test_DBStorage(unittest.TestCase):
         '''
         self.assertTrue(isinstance(storage, DBStorage))
 
-    def test_dbstorage_get(self):
+    def test_get(self):
         '''
             Testing get method
         '''
-        new_o = State(name="California")
-        obj = storage.get("State", "fake_id")
-        self.assertIsNone(obj)
+        # new state for the test case
+        state = State(name="California")
+        self.storage.new(state)
+        state_id = state.id
 
-    def test_dbstorage_count(self):
+        # state is instance of State
+        self.assertIsInstance(state, State)
+
+        # state can be retrieved using storage.get()
+        state = storage.get("State", state_id)
+        self.assertEqual(state.id, state_id)
+
+        # fake_state is None
+        # when the given id doesn't exist
+        fake_state = storage.get("State", "fake_id")
+        self.assertIsNone(fake_state)
+
+        # clean up
+        self.storage.delete(state)
+
+    def test_count(self):
         '''
             Testing cout method
         '''
-        storage.reload()
-        all_count = storage.count(None)
-        self.assertIsInstance(all_count, int)
-        cls_count = storage.count("State")
-        self.assertIsInstance(cls_count, int)
-        self.assertGreaterEqual(all_count, cls_count)
+        count = storage.count()
+
+        # count is int
+        self.assertIsInstance(count, int)
+        # count == 6
+        self.assertEqual(count, 6)
+
+        # count = 7
+        # after the new record has been created
+        state = State({"name": "California"})
+        self.storage.new(state)
+        count = self.storage.count()
+        self.assertEqual(count, 7)
+
+        # while counting only states
+        count = self.storage.count("State")
+
+        # count is int
+        self.assertIsInstance(count, int)
+        # count == 1
+        self.assertEqual(count, 1)
