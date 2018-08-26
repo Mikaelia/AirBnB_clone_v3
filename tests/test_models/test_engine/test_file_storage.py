@@ -129,14 +129,21 @@ class testFileStorage(unittest.TestCase):
         '''
         self.assertTrue(isinstance(storage, FileStorage))
 
-    def test_dbstorage_get(self):
+    def test_filestorage_get(self):
         '''
             Testing get method
         '''
-        self.assertEqual(True, True)
+        new_o = State(name="California")
+        obj = storage.get("State", "fake_id")
+        self.assertIsNone(obj)
 
-    def test_dbstorage_count(self):
+    def test_filestorage_count(self):
         '''
             Testing cout method
         '''
-        self.assertEqual(True, True)
+        storage.reload()
+        all_count = self.storage.count()
+        self.assertIsInstance(all_count, int)
+        cls_count = self.storage.count("State")
+        self.assertIsInstance(cls_count, int)
+        self.assertGreaterEqual(all_count, cls_count)

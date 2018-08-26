@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-    Testing the file_storage module.
+    Testing the db_storage module.
 '''
 import time
 import unittest
@@ -126,10 +126,17 @@ class test_DBStorage(unittest.TestCase):
         '''
             Testing get method
         '''
-        self.assertEqual(True, True)
+        new_o = State(name="California")
+        obj = storage.get("State", "fake_id")
+        self.assertIsNone(obj)
 
     def test_dbstorage_count(self):
         '''
             Testing cout method
         '''
-        self.assertEqual(True, True)
+        storage.reload()
+        all_count = storage.count(None)
+        self.assertIsInstance(all_count, int)
+        cls_count = storage.count("State")
+        self.assertIsInstance(cls_count, int)
+        self.assertGreaterEqual(all_count, cls_count)
