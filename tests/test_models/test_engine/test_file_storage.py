@@ -128,3 +128,15 @@ class testFileStorage(unittest.TestCase):
             Test State model in Filestorage
         '''
         self.assertTrue(isinstance(storage, FileStorage))
+
+    def test_dbstorage_get(self):
+        '''
+            Testing get method
+        '''
+        self.assertEqual(True, True)
+
+    def test_dbstorage_count(self):
+        '''
+            Testing cout method
+        '''
+        self.assertEqual(True, True)

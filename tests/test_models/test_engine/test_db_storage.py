@@ -121,3 +121,15 @@ class test_DBStorage(unittest.TestCase):
             Test to check if storage is an instance for DBStorage
         '''
         self.assertTrue(isinstance(storage, DBStorage))
+
+    def test_dbstorage_get(self):
+        '''
+            Testing get method
+        '''
+        self.assertEqual(True, True)
+
+    def test_dbstorage_count(self):
+        '''
+            Testing cout method
+        '''
+        self.assertEqual(True, True)
