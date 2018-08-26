@@ -84,6 +84,7 @@ class FileStorage:
             objects = self.all(cls)
         else:
             objects = self.all()
+
         return len(objects)
 
     def delete(self, obj=None):

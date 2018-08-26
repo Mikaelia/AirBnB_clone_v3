@@ -17,7 +17,7 @@ from io import StringIO
 db = getenv("HBNB_TYPE_STORAGE")
 
 
-@unittest.skipIf(db != 'db', "Testing DBstorage only")
+@unittest.skipIf(db != "db", "Testing DBstorage only")
 class test_DBStorage(unittest.TestCase):
     '''
         Testing the DB_Storage class

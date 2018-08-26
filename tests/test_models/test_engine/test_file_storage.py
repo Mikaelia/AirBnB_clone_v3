@@ -2,12 +2,10 @@
 '''
     Testing the file_storage module.
 '''
-
 import os
 import time
 import json
 import unittest
-import models
 from models import storage
 from models.base_model import BaseModel
 from models.state import State
@@ -16,12 +14,11 @@ from models.engine.file_storage import FileStorage
 db = os.getenv("HBNB_TYPE_STORAGE")
 
 
-@unittest.skipIf(db == 'db', "Testing DBstorage only")
+@unittest.skipIf(db == "db", "Testing DBstorage only")
 class testFileStorage(unittest.TestCase):
     '''
         Testing the FileStorage class
     '''
-
     def setUp(self):
         '''
             Initializing classes
@@ -33,11 +30,18 @@ class testFileStorage(unittest.TestCase):
         '''
             Cleaning up.
         '''
+        self.file_storage_reloader()
 
+    @staticmethod
+    def file_storage_reloader():
+        '''
+            Deletes the file that represent the storage
+        '''
         try:
             os.remove("file.json")
         except FileNotFoundError:
             pass
+        storage.reload()
 
     def test_all_return_type(self):
         '''
@@ -96,12 +100,11 @@ class testFileStorage(unittest.TestCase):
 
         self.assertIsInstance(content, str)
 
-    def test_reaload_without_file(self):
+    def test_reload_without_file(self):
         '''
             Tests that nothing happens when file.json does not exists
             and reload is called
         '''
-
         try:
             self.storage.reload()
             self.assertTrue(True)
@@ -133,17 +136,49 @@ class testFileStorage(unittest.TestCase):
         '''
             Testing get method
         '''
-        new_o = State(name="California")
-        obj = storage.get("State", "fake_id")
-        self.assertIsNone(obj)
+        # new state for the test case
+        state = State(name="California")
+        self.storage.new(state)
+        state_id = state.id
+
+        # state is instance of State
+        self.assertIsInstance(state, State)
+
+        # state can be retrieved using storage.get()
+        state = storage.get("State", state_id)
+        self.assertEqual(state.id, state_id)
+
+        # fake_state is None
+        # when the given id doesn't exist
+        fake_state = storage.get("State", "fake_id")
+        self.assertIsNone(fake_state)
+
+        # clean up
+        self.storage.delete(state)
 
     def test_filestorage_count(self):
         '''
             Testing cout method
         '''
-        storage.reload()
-        all_count = self.storage.count()
-        self.assertIsInstance(all_count, int)
-        cls_count = self.storage.count("State")
-        self.assertIsInstance(cls_count, int)
-        self.assertGreaterEqual(all_count, cls_count)
+        # print("\n", "self.storage.count:", self.storage.count(),"\n")
+        count = storage.count()
+
+        # count is int
+        self.assertIsInstance(count, int)
+        # count == 6
+        self.assertEqual(count, 6)
+
+        # count = 7
+        # after the new record has been created
+        state = State({"name": "California"})
+        self.storage.new(state)
+        count = self.storage.count()
+        self.assertEqual(count, 7)
+
+        # while counting only states
+        count = self.storage.count("State")
+
+        # count is int
+        self.assertIsInstance(count, int)
+        # count == 1
+        self.assertEqual(count, 1)
