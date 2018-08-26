@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 '''
-    Testing the file_storage module.
+    Testing the db_storage module.
 '''
 import time
 import unittest
@@ -17,7 +17,7 @@ from io import StringIO
 db = getenv("HBNB_TYPE_STORAGE")
 
 
-@unittest.skipIf(db != 'db', "Testing DBstorage only")
+@unittest.skipIf(db != "db", "Testing DBstorage only")
 class test_DBStorage(unittest.TestCase):
     '''
         Testing the DB_Storage class
@@ -121,3 +121,53 @@ class test_DBStorage(unittest.TestCase):
             Test to check if storage is an instance for DBStorage
         '''
         self.assertTrue(isinstance(storage, DBStorage))
+
+    def test_get(self):
+        '''
+            Testing get method
+        '''
+        # new state for the test case
+        state = State(name="California")
+        self.storage.new(state)
+        state_id = state.id
+
+        # state is instance of State
+        self.assertIsInstance(state, State)
+
+        # state can be retrieved using storage.get()
+        state = storage.get("State", state_id)
+        self.assertEqual(state.id, state_id)
+
+        # fake_state is None
+        # when the given id doesn't exist
+        fake_state = storage.get("State", "fake_id")
+        self.assertIsNone(fake_state)
+
+        # clean up
+        self.storage.delete(state)
+
+    def test_count(self):
+        '''
+            Testing cout method
+        '''
+        count = storage.count()
+
+        # count is int
+        self.assertIsInstance(count, int)
+        # count == 6
+        self.assertEqual(count, 6)
+
+        # count = 7
+        # after the new record has been created
+        state = State({"name": "California"})
+        self.storage.new(state)
+        count = self.storage.count()
+        self.assertEqual(count, 7)
+
+        # while counting only states
+        count = self.storage.count("State")
+
+        # count is int
+        self.assertIsInstance(count, int)
+        # count == 1
+        self.assertEqual(count, 1)
