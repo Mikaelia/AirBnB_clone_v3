@@ -94,16 +94,6 @@ class Test_Console_Common(Test_Console):
 @unittest.skipIf(db == "db", "Testing database storage only")
 class Test_Console_With_DBStorage(Test_Console):
     ''' Test the console module with the DBStorage'''
-    def setUp(self):
-        '''setup for'''
-        self.backup = sys.stdout
-        self.capt_out = StringIO()
-        sys.stdout = self.capt_out
-
-    def tearDown(self):
-        ''''''
-        sys.stdout = self.backup
-
     def test_show(self):
         '''
             Testing that show exists
@@ -156,16 +146,6 @@ class Test_Console_With_DBStorage(Test_Console):
 @unittest.skipIf(db != "db", "Testing FileStorage only")
 class Test_Console_With_FileStorage(Test_Console):
     ''' Test the console module with the FileStorage'''
-    def setUp(self):
-        '''setup for'''
-        self.backup = sys.stdout
-        self.capt_out = StringIO()
-        sys.stdout = self.capt_out
-
-    def tearDown(self):
-        ''''''
-        sys.stdout = self.backup
-
     def test_create_db(self):
         console = self.create()
         console.onecmd("create State name=California")
