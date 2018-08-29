@@ -79,6 +79,9 @@ def update_states(state_id=None):
     """
     try:
         json = request.get_json()
+
+        if isinstance(json, dict) is False:
+            raise Exception(400)
     except:
         return jsonify({"error": "Not a JSON"}), 400
 
