@@ -22,7 +22,7 @@ class User(BaseModel, Base):
 
     def set_password(self, plaintext):
         """ Sets password property to it's md5 value """
-        return md5(plaintext.encode()).hexdigest().lower()
+        return md5(plaintext.encode()).hexdigest()
 
     if getenv("HBNB_TYPE_STORAGE", "fs") == "db":
         password = Column(String(128), nullable=False)
