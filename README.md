@@ -7,10 +7,10 @@
 > The majority of the work in this phase of the project consists of creating and implementing a RESTful API and can be found in the `api` folder. 
 
 ## Links to Project Versions:
-Version 1 - Testing Console: https://github.com/Mikaelia/AirBnB_clone
-Version 2 - MySQL: https://github.com/Mikaelia/AirBnB_clone_v2/edit/master/README.md
-Version 3 - Deploy Static & RESTful API: https://github.com/Mikaelia/AirBnB_clone_v3/edit/master/README.md
-Version 4 - Web Framework/Web dynamic: https://github.com/Mikaelia/AirBnB_clone_v4/edit/master/README.md
+- Version 1 - Testing Console: https://github.com/Mikaelia/AirBnB_clone
+- Version 2 - MySQL: https://github.com/Mikaelia/AirBnB_clone_v2/edit/master/README.md
+- Version 3 - Deploy Static & RESTful API: https://github.com/Mikaelia/AirBnB_clone_v3/edit/master/README.md
+- Version 4 - Web Framework/Web dynamic: https://github.com/Mikaelia/AirBnB_clone_v4/edit/master/README.md
 
 
 #### Description
