@@ -1,10 +1,11 @@
-# Deploy Static
+# Deploy Static & RESTful API
 
 ## Synopsis
 
 > The Airbnb clone project for which we are creating a copy of the [Airbnb](https://www.airbnb.com/).
-> Only some features will be implemented and will be listed below once completed.
-> Here, Fabric is used for application deployment.
+
+> The majority of the work in this phase of the project consists of creating and implementing a RESTful API and can be found in the `api` folder. 
+
 
 
 ## Features
